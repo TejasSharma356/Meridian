@@ -90,50 +90,67 @@ function ArchitectContent() {
           />
 
           {/* 2. Blueprint Overview */}
-          <Card className="bg-[#0f0f14]/80 border-white/[0.05] backdrop-blur-xl mb-8 border-l-2 border-l-[#6366f1]/50">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <FileText className="h-5 w-5 text-[#6366f1]" />
-                <span className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">
-                  Blueprint Overview
-                </span>
+          <section className="mb-12">
+            <div className="flex items-center gap-3 mb-6">
+              <FileText className="h-5 w-5 text-[#6366f1]" />
+              <span className="text-[10px] font-black tracking-[0.2em] text-white/40 uppercase">
+                Technical Blueprint Overview
+              </span>
+            </div>
+
+            {isGenerating ? (
+              <div className="space-y-4">
+                 <CardSkeleton lines={3} />
               </div>
-              {isGenerating ? (
-                <div className="space-y-3">
-                  <CardSkeleton lines={3} />
-                </div>
-              ) : (
-                <p className="text-base text-white/70 leading-relaxed font-medium">
-                  {blueprint?.overview ||
-                    "Input your project details and click 'Generate Plan' to synthesize your system architecture."}
-                </p>
-              )}
-            </CardContent>
-          </Card>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                <Card className="bg-[#0f0f14]/80 border-white/[0.05] backdrop-blur-xl border-l-2 border-l-[#6366f1]/50 overflow-hidden">
+                  <div className="p-8">
+                    <p className="text-lg text-white/80 leading-relaxed font-semibold mb-8 italic">
+                      "{blueprint?.overview || "Synthesizing your technical vision..."}"
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-white/5">
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black text-[#6366f1] uppercase tracking-widest">System Architecture</h4>
+                        <p className="text-xs text-white/40 leading-relaxed">
+                          {blueprint?.detailedOverview?.architecture || "Designing core topology and network protocols..."}
+                        </p>
+                      </div>
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black text-[#818CF8] uppercase tracking-widest">Execution Logic</h4>
+                        <p className="text-xs text-white/40 leading-relaxed">
+                          {blueprint?.detailedOverview?.logic || "Mapping state machine and data processing pipelines..."}
+                        </p>
+                      </div>
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black text-[#34D399] uppercase tracking-widest">Scale & Performance</h4>
+                        <p className="text-xs text-white/40 leading-relaxed">
+                          {blueprint?.detailedOverview?.scalability || "Optimizing throughput and resource orchestration..."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            )}
+          </section>
 
           {/* 3. System Flow Architecture */}
           {isGenerating ? (
             <Card className="bg-[#0f0f14]/80 border-white/[0.05] backdrop-blur-xl mb-12">
-              <CardContent className="p-8 space-y-6">
-                <div className="flex justify-between">
-                  <div className="h-5 w-52 bg-white/[0.04] rounded relative overflow-hidden">
-                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.4s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
-                  </div>
+              <CardContent className="p-0 space-y-0">
+                <div className="px-8 py-6 border-b border-white/[0.03] flex justify-between items-center">
+                   <div className="h-6 w-48 bg-white/5 rounded animate-pulse" />
+                   <div className="h-10 w-64 bg-white/5 rounded-xl animate-pulse" />
                 </div>
                 <div
-                  className="w-full rounded-3xl bg-[#050507] border border-white/[0.05] relative overflow-hidden"
-                  style={{ height: '320px' }}
+                  className="w-full bg-[#050507] relative overflow-hidden"
+                  style={{ height: '450px' }}
                 >
-                  {/* Animate placeholder nodes */}
-                  {[20, 45, 70].map((x) => (
-                    <div
-                      key={x}
-                      className="absolute top-1/2 -translate-y-1/2 w-20 h-20 rounded-xl bg-white/[0.03] border border-white/[0.05] relative overflow-hidden"
-                      style={{ left: `${x}%` }}
-                    >
-                      <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.4s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/[0.07] to-transparent" />
-                    </div>
-                  ))}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                     <span className="text-[10px] font-black text-white/10 uppercase tracking-[0.3em] animate-pulse">Orchestrating Workflow Views...</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
