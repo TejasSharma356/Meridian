@@ -4,15 +4,17 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 interface RecommendationProps {
   title: string;
   demand: 'HIGH' | 'MEDIUM';
   description: string;
   tags: string[];
+  className?: string;
 }
 
-export default function RecommendationCard({ title, demand, description, tags }: RecommendationProps) {
+export default function RecommendationCard({ title, demand, description, tags, className }: RecommendationProps) {
   const router = useRouter();
   const demandColor = demand === 'HIGH' ? 'text-green-400 border-green-400/30 bg-green-400/5' : 'text-orange-400 border-orange-400/30 bg-orange-400/5';
 
@@ -25,8 +27,13 @@ export default function RecommendationCard({ title, demand, description, tags }:
   };
 
   return (
-    <Card className="bg-[#0f0f14]/80 border-white/[0.05] backdrop-blur-xl group hover:border-white/[0.1] transition-all overflow-hidden mb-4">
-      <CardContent className="p-6">
+    <Card
+      className={cn(
+        'bg-[#0f0f14]/80 border-white/[0.05] backdrop-blur-xl group hover:border-white/[0.1] transition-all overflow-hidden h-auto flex flex-col',
+        className
+      )}
+    >
+      <CardContent className="p-6 sm:p-7 flex flex-col flex-1">
         <div className="flex justify-between items-start mb-4">
           <h4 className="text-lg font-bold text-white leading-tight">{title}</h4>
           <span className={`text-[10px] font-bold px-2 py-1 rounded border ${demandColor}`}>
@@ -34,7 +41,7 @@ export default function RecommendationCard({ title, demand, description, tags }:
           </span>
         </div>
         
-        <p className="text-sm text-white/50 mb-6 leading-relaxed">
+        <p className="text-base text-white/55 mb-6 leading-relaxed flex-1">
           {description}
         </p>
 

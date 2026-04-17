@@ -30,6 +30,14 @@ const UserProfileSchema = new mongoose.Schema({
     type: Number,
     default: 75,
   },
+  jobsAppliedCount: {
+    type: Number,
+    default: 0,
+  },
+  portfolioViewsCount: {
+    type: Number,
+    default: 0,
+  },
 }, {
   timestamps: true, // Automatically manages createdAt and updatedAt
 });
