@@ -7,9 +7,9 @@ import Project from '@/models/Project';
 import DashboardStats from '@/components/DashboardStats';
 import { BackButton } from '@/components/ui/back-button';
 import { HealthScoreGauge } from '@/components/HealthScoreGauge';
-import { Plus, LayoutGrid, Rocket } from 'lucide-react';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { DashboardGreeting } from '@/components/dashboard/DashboardGreeting';
+import { ActiveProjectsEmptyState } from '@/components/dashboard/ActiveProjectsEmptyState';
+import { DashboardMainSurface } from '@/components/layout/DashboardMainSurface';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,14 +26,16 @@ export default async function Dashboard() {
 
   if (session.isDev) {
     user = { name: "Alex Mercer (DEV)" };
-    profile = { 
-      dreamRole: "Technical Architect", 
+    profile = {
+      dreamRole: "Technical Architect",
       techStack: ["React", "Next.js", "MongoDB"],
       healthScore: 82,
       resumeText: "Dev Bypass Resume",
-      linkedinUrl: "https://linkedin.com/in/devbypass"
+      linkedinUrl: "https://linkedin.com/in/devbypass",
+      jobsAppliedCount: 0,
+      portfolioViewsCount: 0,
     };
-    projects = []; // User requested 0 project state
+    projects = [];
   } else {
     // Only connect to DB if not in dev mode
     await dbConnect();
@@ -58,44 +60,51 @@ export default async function Dashboard() {
   if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
   if (hour >= 17) greeting = 'Good evening';
 
+  const firstName = user?.name?.split(' ')[0] || 'Agent';
+
+  const jobsApplied = Number(profile.jobsAppliedCount ?? 0);
+  const portfolioViews = Number(profile.portfolioViewsCount ?? 0);
+  const skillsCount = profile.techStack?.length ?? 0;
+
+  const fmtViews = (n: number) =>
+    n >= 1000 ? `${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k` : String(n);
+
   const stats = [
-    { 
-      label: 'PROJECTS BUILT', 
-      val: projects.length.toString(), 
-      status: '+2 THIS MO' 
+    {
+      label: 'PROJECTS BUILT',
+      val: String(projects.length),
+      status: projects.length === 0 ? 'START BUILDING' : 'ACTIVE',
     },
-    { 
-      label: 'JOBS APPLIED', 
-      val: '45', 
-      status: '+12%' 
+    {
+      label: 'JOBS APPLIED',
+      val: String(jobsApplied),
+      status: jobsApplied === 0 ? 'NO OUTREACH YET' : 'TOTAL SENT',
     },
-    { 
-      label: 'PORTFOLIO VIEWS', 
-      val: '1.2k', 
-      status: 'TOP MATCH' 
+    {
+      label: 'PORTFOLIO VIEWS',
+      val: fmtViews(portfolioViews),
+      status: portfolioViews === 0 ? 'NO VIEWS YET' : 'ALL TIME',
     },
-    { 
-      label: 'SKILLS MATCHED', 
-      val: profile.techStack?.length?.toString() || '0', 
-      status: 'TOP 5%' 
-    }
+    {
+      label: 'SKILLS MATCHED',
+      val: String(skillsCount),
+      status: skillsCount === 0 ? 'ADD STACK' : 'FROM PROFILE',
+    },
   ];
 
   return (
-    <div className="w-full h-full p-12 bg-black text-white selection:bg-[#d856b8]">
-      <div className="max-w-6xl mx-auto flex flex-col items-start gap-12 pt-16">
+    <DashboardMainSurface raysClassName="opacity-[0.6]">
+    <div className="w-full h-full px-6 sm:px-10 pb-16 pt-2 text-white selection:bg-[#d856b8]">
+      <div className="max-w-7xl mx-auto w-full flex flex-col items-start gap-10 sm:gap-12">
         <BackButton className="mb-2" label="Home" />
         
         {/* Main Header Section */}
-        <section className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-6xl font-black tracking-tighter text-white">
-              {greeting}, <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">{user?.name?.split(' ')[0] || 'Agent'}</span>
-            </h1>
-            <p className="text-white/40 text-lg max-w-xl leading-relaxed">
-              Your career trajectory is currently outperforming <span className="text-white font-bold">85%</span> of your peer group. AI recommends focusing on the <span className="text-[#6366f1] font-bold">"{profile.dreamRole}"</span> logic today.
-            </p>
-          </div>
+        <section className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 lg:gap-12">
+          <DashboardGreeting
+            greeting={greeting}
+            firstName={firstName}
+            dreamRole={profile.dreamRole ?? 'Software Developer'}
+          />
           <HealthScoreGauge score={profile.healthScore || 75} />
         </section>
 
@@ -103,28 +112,24 @@ export default async function Dashboard() {
         <DashboardStats stats={stats} />
 
         {/* Active Projects */}
-        <section className="w-full space-y-8 mt-4">
-          <div className="flex justify-between items-end border-b border-white/10 pb-6">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-2xl font-bold tracking-tight">Active Projects</h2>
-              <p className="text-[10px] uppercase font-black tracking-[0.3em] text-white/20">Operational Roadmap</p>
+        <section className="w-full space-y-10 mt-6">
+          <div className="flex justify-between items-end border-b border-white/10 pb-6 gap-4">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white">Active Projects</h2>
+              <p className="text-[11px] sm:text-xs uppercase font-black tracking-[0.35em] text-white/25">
+                Operational Roadmap
+              </p>
             </div>
-            <button className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-[#6366f1] transition-colors">View All Projects</button>
+            <button
+              type="button"
+              className="text-[11px] sm:text-xs font-black uppercase tracking-[0.25em] text-white/40 hover:text-[#6366f1] transition-colors shrink-0"
+            >
+              View All Projects
+            </button>
           </div>
 
           {projects.length === 0 ? (
-            <div className="w-full p-16 bg-white/[0.02] border border-white/5 border-dashed rounded-[2rem] flex flex-col items-center justify-center gap-6 text-center">
-              <div className="w-16 h-16 rounded-3xl bg-white/[0.03] border border-white/5 flex items-center justify-center">
-                <Plus className="text-white/20" size={32} />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-white mb-2">No active projects detected</h3>
-                <p className="text-white/40 text-sm max-w-sm mx-auto">Start your first career-boosting project to begin tracking metrics and trajectory gains.</p>
-              </div>
-              <button className="px-8 py-3 bg-[#6366f1] text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:scale-[1.05] transition-all active:scale-95 shadow-xl shadow-[#6366f1]/20">
-                Start a New Project
-              </button>
-            </div>
+            <ActiveProjectsEmptyState />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
               {projects.map((proj, idx) => (
@@ -164,5 +169,6 @@ export default async function Dashboard() {
         </section>
       </div>
     </div>
+    </DashboardMainSurface>
   );
 }

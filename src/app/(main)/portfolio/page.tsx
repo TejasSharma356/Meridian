@@ -2,19 +2,30 @@
 
 import { motion } from 'framer-motion';
 import { BackButton } from "@/components/ui/back-button";
+import { DashboardMainSurface } from '@/components/layout/DashboardMainSurface';
+import {
+  DashboardPageTitle,
+  DASHBOARD_PAGE_SUBTITLE_CLASSES,
+} from '@/components/dashboard/DashboardPageTitle';
 
 export default function Portfolio() {
   return (
-    <div className="w-full h-full flex flex-col relative bg-black text-white selection:bg-[#d856b8]">
-      <div className="px-12 pt-12 pb-6 flex flex-col gap-4">
+    <DashboardMainSurface raysClassName="opacity-[0.58]">
+    <div className="w-full h-full flex flex-col relative text-white selection:bg-[#d856b8] px-6 sm:px-10 pb-24 pt-2">
+      <div className="max-w-7xl mx-auto w-full pb-6 flex flex-col gap-4">
         <BackButton />
-        <div>
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#6366f1] opacity-60">Phase 04 & 05</span>
-          <h2 className="text-4xl font-bold tracking-tight mt-2">Portfolio Strategy</h2>
+        <div className="space-y-4">
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#6366f1] opacity-60">
+            Phase 04 & 05
+          </span>
+          <DashboardPageTitle title="PORTFOLIO STRATEGY" />
+          <p className={`${DASHBOARD_PAGE_SUBTITLE_CLASSES} max-w-3xl`}>
+            Manifest and market matches on one scroll — same session as the rest of your console.
+          </p>
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden px-12 pb-32 gap-12">
+      <div className="max-w-7xl mx-auto w-full flex-1 flex overflow-hidden pb-32 gap-8 lg:gap-12">
         {/* Left Side: Documentation Preview */}
         <section className="w-1/2 flex flex-col gap-6 h-full">
           <div className="flex items-center justify-between">
@@ -28,7 +39,7 @@ export default function Portfolio() {
           <div className="flex-1 bg-white/[0.02] border border-white/[0.08] rounded-3xl p-10 overflow-y-auto no-scrollbar font-sans text-sm leading-relaxed backdrop-blur-3xl shadow-2xl">
             <div className="prose prose-invert max-w-none">
               <h1 className="text-3xl font-black mb-6 border-b border-white/10 pb-4 tracking-tighter">Obsidian Flow Engine</h1>
-              <p className="text-white/60 mb-8 leading-loose">A high-performance reactive architecture for localized intelligence processing. Built for the modern obsidian-tier architect utilizing vector memory propagation.</p>
+              <p className="text-white/60 text-base md:text-lg mb-8 leading-relaxed">A high-performance reactive architecture for localized intelligence processing. Built for the modern obsidian-tier architect utilizing vector memory propagation.</p>
 
               <h3 className="text-lg font-bold mt-10 mb-4 text-[#6366f1] tracking-tight uppercase text-[12px]">Core Features</h3>
               <ul className="space-y-3 mb-8">
@@ -46,7 +57,7 @@ export default function Portfolio() {
               </div>
 
               <h3 className="text-lg font-bold mt-10 mb-4 text-[#6366f1] tracking-tight uppercase text-[12px]">Deployment</h3>
-              <p className="text-white/40 leading-loose">Deploy to edge nodes with a single command. The engine handles horizontal scaling across distributed obsidian clusters automatically.</p>
+              <p className="text-white/50 text-base leading-relaxed">Deploy to edge nodes with a single command. The engine handles horizontal scaling across distributed obsidian clusters automatically.</p>
             </div>
           </div>
         </section>
@@ -92,7 +103,7 @@ export default function Portfolio() {
 
           <div className="mt-auto p-6 bg-[#6366f1]/5 rounded-3xl border border-[#6366f1]/10 flex items-start gap-5 flex-shrink-0 backdrop-blur-3xl shadow-2xl shadow-[#6366f1]/5">
             <span className="material-symbols-outlined text-[#6366f1] text-lg mt-0.5">info</span>
-            <p className="text-[11px] text-white/60 leading-relaxed font-medium">
+            <p className="text-sm md:text-base text-white/55 leading-relaxed font-medium">
               AI matches are calculated based on your architectural patterns in the Build phase and the metadata exported from your local repositories. These targets have the highest synergy with your current node status.
             </p>
           </div>
@@ -106,5 +117,6 @@ export default function Portfolio() {
         </button>
       </div>
     </div>
+    </DashboardMainSurface>
   );
 }

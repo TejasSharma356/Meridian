@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BackButton } from "@/components/ui/back-button";
+import { DashboardMainSurface } from '@/components/layout/DashboardMainSurface';
+import {
+  DashboardPageTitle,
+  DASHBOARD_PAGE_SUBTITLE_CLASSES,
+} from '@/components/dashboard/DashboardPageTitle';
 
 const MOCK_JOBS = [
   { company: 'Vercel', role: 'Senior Frontend Engineer', loc: 'San Francisco, CA', match: 98, desc: 'You recently built 3 projects using React & Next.js, and your Edge Functions implementation aligns with their core requirements.' },
@@ -14,15 +19,19 @@ export default function ApplyPage() {
   const [selectedJob, setSelectedJob] = useState(MOCK_JOBS[0]);
 
   return (
-    <div className="w-full h-full p-12 bg-black text-white selection:bg-[#d856b8]">
-      <div className="max-w-6xl mx-auto flex flex-col gap-12">
+    <DashboardMainSurface raysClassName="opacity-[0.58]">
+    <div className="w-full h-full px-6 sm:px-10 pb-16 pt-2 text-white selection:bg-[#d856b8]">
+      <div className="max-w-7xl mx-auto w-full flex flex-col gap-10 sm:gap-12">
         <BackButton />
-        <header className="flex flex-col gap-2">
+        <header className="flex flex-col gap-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#6366f1]/20 bg-[#6366f1]/5 w-fit">
             <span className="w-2 h-2 rounded-full bg-[#6366f1] animate-pulse"></span>
             <span className="text-[#6366f1] text-[10px] font-bold uppercase tracking-[0.2em]">Outreach Generation: Active</span>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-white mt-2">Job Matching</h1>
+          <DashboardPageTitle title="JOB MATCHING" />
+          <p className={`${DASHBOARD_PAGE_SUBTITLE_CLASSES} max-w-2xl`}>
+            Review matches and draft outreach in one flow — aligned with the rest of your dashboard.
+          </p>
         </header>
 
         <div className="flex flex-col lg:flex-row gap-12 overflow-hidden items-stretch">
@@ -72,7 +81,7 @@ export default function ApplyPage() {
                  <span className="material-symbols-outlined text-[#6366f1] text-sm font-bold">verified</span>
                  <strong className="text-xs uppercase tracking-widest text-[#6366f1]">Why you match:</strong>
               </div>
-              <p className="text-sm leading-loose text-white/80 font-medium">
+              <p className="text-base md:text-lg leading-relaxed text-white/80 font-medium">
                 {selectedJob.desc}
               </p>
             </div>
@@ -95,5 +104,6 @@ export default function ApplyPage() {
         </div>
       </div>
     </div>
+    </DashboardMainSurface>
   );
 }

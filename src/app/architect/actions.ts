@@ -129,3 +129,137 @@ function getFallbackBlueprint(title: string): ArchitectureBlueprint {
     ],
   };
 }
+
+export type ArchitectProjectSummary = Pick<
+  ArchitectureBlueprint,
+  'overview' | 'detailedOverview'
+>;
+
+/** Called when a project is sent to System Architect (e.g. from Intelligence) — fills the overview before Initiate. */
+export async function generateArchitectProjectSummary(
+  title: string,
+  description: string,
+  techStackCsv?: string
+): Promise<ArchitectProjectSummary> {
+  try {
+    const searchContext = await tavilySearch(
+      `technical product brief and architecture context for "${title}" ${description} ${techStackCsv || ''}`
+    );
+
+    const systemPrompt = `You are a Principal Engineer writing a board-ready project brief. Output ONLY valid JSON, no markdown.
+
+Schema:
+{
+  "overview": string (2 sentences, specific to this product),
+  "detailedOverview": {
+    "architecture": string (3-4 sentences),
+    "logic": string (3-4 sentences),
+    "scalability": string (2-3 sentences)
+  }
+}`;
+
+    const userPrompt = `Title: ${title}
+Description: ${description}
+Suggested stack: ${techStackCsv || 'not specified'}
+Research: ${searchContext}
+
+Write the JSON brief.`;
+
+    const data = await invokeClaude(userPrompt, systemPrompt, 2048);
+    return data as ArchitectProjectSummary;
+  } catch (e) {
+    console.error('Architect summary failed:', e);
+    const fb = getFallbackBlueprint(title);
+    return {
+      overview: fb.overview,
+      detailedOverview: fb.detailedOverview,
+    };
+  }
+}
+
+/** Regenerate or refine only the workflow graph (nodes + edges) for the current project context. */
+export async function regenerateWorkflowDiagram(input: {
+  title: string;
+  description: string;
+  techStackCsv?: string;
+  persistenceNodeName?: string;
+  previousNodes?: SystemFlowNode[];
+  previousEdges?: SystemFlowEdge[];
+  /** Empty string = pure regenerate with varied layout */
+  refineInstruction?: string;
+}): Promise<{ nodes: SystemFlowNode[]; edges: SystemFlowEdge[]; persistenceNodeName?: string }> {
+  const {
+    title,
+    description,
+    techStackCsv,
+    persistenceNodeName,
+    previousNodes,
+    previousEdges,
+    refineInstruction,
+  } = input;
+
+  try {
+    const searchContext = await tavilySearch(
+      `software workflow nodes and integrations for "${title}" ${description}`
+    );
+
+    const systemPrompt = `You are a Lead Systems Architect. Output ONLY valid JSON, no markdown.
+
+Schema:
+{
+  "persistenceNodeName": string,
+  "nodes": [{ "id": string, "label": string, "type": "client"|"api"|"service"|"db"|"queue"|"cache"|"external"|"agent"|"orchestrator", "layer": "user"|"api"|"logic"|"agent"|"data"|"external", "description": string }],
+  "edges": [{ "from": string, "to": string, "label": string }]
+}
+
+Rules:
+- 8–14 nodes, 10–16 directed edges forming a coherent DAG-style workflow (no orphan nodes).
+- IDs must be stable kebab-case (e.g. "api-gateway", "vector-store").
+- Every edge "from" and "to" must match node ids.
+- Include an agentic path if the product benefits from it.`;
+
+    const prev = JSON.stringify({
+      persistenceNodeName,
+      nodes: previousNodes || [],
+      edges: previousEdges || [],
+    });
+
+    const userPrompt = `Project Title: ${title}
+Project Description: ${description}
+Tech context: ${techStackCsv || 'unspecified'}
+Research: ${searchContext}
+
+Current workflow JSON (revise from this baseline):
+${prev}
+
+${refineInstruction?.trim()
+  ? `User change request — apply strictly: ${refineInstruction.trim()}`
+  : 'Regenerate the workflow with a fresh topology while keeping the same product intent.'}
+
+Return revised nodes and edges only in the JSON schema.`;
+
+    const data = await invokeClaude(userPrompt, systemPrompt, 4096);
+    const out = data as {
+      nodes?: SystemFlowNode[];
+      edges?: SystemFlowEdge[];
+      persistenceNodeName?: string;
+    };
+    if (!out?.nodes?.length || !out?.edges?.length) {
+      const fb = getFallbackBlueprint(title);
+      return {
+        nodes: fb.nodes,
+        edges: fb.edges,
+        persistenceNodeName: fb.persistenceNodeName,
+      };
+    }
+    return {
+      nodes: out.nodes,
+      edges: out.edges,
+      persistenceNodeName: out.persistenceNodeName || persistenceNodeName || 'Database',
+    };
+  } catch (e) {
+    console.error('Workflow regeneration failed:', e);
+    const fb = getFallbackBlueprint(title);
+    return { nodes: fb.nodes, edges: fb.edges, persistenceNodeName: fb.persistenceNodeName };
+  }
+}
