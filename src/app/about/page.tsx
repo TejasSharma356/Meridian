@@ -51,41 +51,34 @@ const values = [
 
 const team = [
   {
-    name: "Aria Voss",
+    name: "Vighnesh Singh Dhanai ",
     role: "Co-founder & CEO",
-    bio: "Ex-Google PM. Built and sold two developer-tools startups. Obsessed with shrinking the gap between talent and opportunity.",
-    initial: "AV",
+    bio: "SRMITE.Obsessed with shrinking the gap between talent and opportunity, Hates linkedin so founded an alternative.",
+    initial: "VS",
     color: "bg-indigo-500/20 text-indigo-300",
   },
   {
-    name: "Rishi Malhotra",
+    name: "Tejas Sharma",
     role: "Co-founder & CTO",
-    bio: "Former ML lead at HuggingFace. Architect of Meridian's intelligence engine and job-matching semantic layer.",
-    initial: "RM",
+    bio: "SRMITE. Architect of Meridian's intelligence engine and job-matching semantic layer. Basically made the frontend what it looks like that is beautiful",
+    initial: "TS",
     color: "bg-violet-500/20 text-violet-300",
   },
   {
-    name: "Leila Achkar",
-    role: "Head of Design",
-    bio: "Ex-Figma, Ex-Linear. Crafts interfaces that feel inevitable — the kind where users wonder why everything else feels clunky.",
-    initial: "LA",
+    name: "Satvik Sharma",
+    role: "Head of Marketing and Design",
+    bio: "SRMITE. Crafts designs that feel inevitable — the kind where users wonder why everything else feels clunky.",
+    initial: "SS",
     color: "bg-rose-500/20 text-rose-300",
-  },
-  {
-    name: "Marcus Teller",
-    role: "Head of Growth",
-    bio: "Built community for 0→100k users at Replit. Believes the best growth is a product so good people can't help but tell their friends.",
-    initial: "MT",
-    color: "bg-amber-500/20 text-amber-300",
   },
 ];
 
 const milestones = [
-  { year: "2023", event: "Founded in San Francisco with a $1.2M pre-seed round." },
-  { year: "Q1 24", event: "Shipped v1 Intelligence Engine — 500 beta users onboarded in 48 hours." },
-  { year: "Q3 24", event: "Raised $6M seed. Expanded to EU and APAC markets." },
-  { year: "Q1 25", event: "Crossed 40,000 active users. Launched Agentic IDE beta." },
-  { year: "Today", event: "50k+ engineers. 94% interview conversion. Growing every day." },
+  { year: "2026", event: "Founded in SRM with a mission to fix the broken hiring system." },
+  { year: "Q1 27", event: "Shipped v1 Intelligence Engine — 500 beta users onboarded in 48 hours." },
+  { year: "Q3 27", event: "Raised seed. Expanded to EU and APAC markets." },
+  { year: "Q1 28", event: "Crossed 40,000 active users. Launched Agentic IDE beta." },
+  { year: "2028", event: "50k+ engineers. 94% interview conversion. Growing every day." },
 ];
 
 export default function AboutPage() {
@@ -146,24 +139,24 @@ export default function AboutPage() {
             >
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
                 <p className="text-white/60 text-sm leading-relaxed italic">
-                  "The average engineer spends 6 months applying before landing a senior role. With Meridian, our median user does it in 7 weeks."
+                  "The average engineer spends 6 months applying before landing a senior role. With Meridian, our median user does it in less."
                 </p>
                 <div className="mt-4 flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-xs text-indigo-300 font-bold">AV</div>
                   <div>
-                    <p className="text-white text-sm font-medium">Aria Voss</p>
+                    <p className="text-white text-sm font-medium">Vighnesh Singh Dhanai </p>
                     <p className="text-white/40 text-xs">CEO, Meridian</p>
                   </div>
                 </div>
               </div>
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
                 <p className="text-white/60 text-sm leading-relaxed italic">
-                  "We built the tool we desperately needed when we were job hunting. Then we made it 10× better."
+                  "We built the tool we desperately needed when we were hunting internships. Then we made it 10× better."
                 </p>
                 <div className="mt-4 flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-violet-500/20 flex items-center justify-center text-xs text-violet-300 font-bold">RM</div>
                   <div>
-                    <p className="text-white text-sm font-medium">Rishi Malhotra</p>
+                    <p className="text-white text-sm font-medium">Tejas Sharma</p>
                     <p className="text-white/40 text-xs">CTO, Meridian</p>
                   </div>
                 </div>
@@ -222,8 +215,8 @@ export default function AboutPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4">Milestones</h2>
-            <p className="text-white/40 text-lg">From garage to 50,000 engineers.</p>
+            <h2 className="text-4xl font-bold mb-4">Milestones we want to achieve</h2>
+            <p className="text-white/40 text-lg">From 3 to an Empire.</p>
           </motion.div>
 
           <div className="relative">
@@ -266,11 +259,11 @@ export default function AboutPage() {
             </span>
             <h2 className="text-4xl font-bold mb-4">Who's Building Meridian</h2>
             <p className="text-white/40 text-lg max-w-xl mx-auto">
-              Ex-Google, HuggingFace, Figma, and Replit alumni united by one conviction: hiring is broken and we can fix it.
+              SRMITE ALL TOGETHER united by one conviction: hiring is broken and we can fix it.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {team.map((member, i) => (
               <motion.div
                 key={member.name}
