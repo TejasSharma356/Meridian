@@ -108,9 +108,10 @@ function BuildPageInner() {
     : 'Workspace: local_session';
 
   return (
-    <div className="flex flex-col h-[calc(100vh-80px)] bg-black text-white">
-      <header className="px-8 py-4 border-b border-white/5 flex justify-between items-center gap-4">
-        <div className="min-w-0">
+    <div className="flex flex-col h-screen pt-24 pb-4 px-4 bg-black text-white relative z-10 w-full overflow-hidden">
+      {/* Top Header */}
+      <header className="px-6 py-4 mb-4 border border-white/10 bg-white/[0.02] rounded-xl flex items-center justify-between shadow-lg">
+        <div>
           <h1 className="text-xl font-bold tracking-tight">Agentic IDE</h1>
           <p className="text-[10px] font-mono text-white/30 uppercase tracking-widest truncate">{workspaceLabel}</p>
         </div>
@@ -130,40 +131,41 @@ function BuildPageInner() {
         </div>
       </header>
 
-      <div className="flex-1 flex overflow-hidden">
-        <SandpackProvider
-          files={DEFAULT_FILES}
-          theme={cobalt2}
-          template="react"
-          options={{
-            recompileDelay: 300,
-            classes: {
-              'sp-layout': 'ghost-border rounded-none border-0',
-            },
-          }}
-        >
-          <div className="flex-1 flex overflow-hidden">
-            <SandpackLayout className="flex-1 border-0">
-              <div className="w-[200px] border-r border-white/5 h-full overflow-y-auto">
-                <SandpackFileExplorer />
-              </div>
-              <div className="flex-1 flex flex-col min-w-0">
-                <SandpackCodeEditor
-                  className="flex-1 h-full"
-                  showTabs={true}
-                  showLineNumbers={true}
-                  closableTabs={true}
-                />
-                <TerminalSync />
-              </div>
-              <div className="flex-1 border-l border-white/5 bg-[#050505]">
-                <SandpackPreview className="h-full" />
-              </div>
-            </SandpackLayout>
-          </div>
-        </SandpackProvider>
+      {/* Main IDE area */}
+      <div className="flex-1 flex gap-4 overflow-hidden min-h-0">
+        <div className="flex-1 flex overflow-hidden border border-white/10 rounded-xl bg-white/[0.02]">
+          <SandpackProvider 
+            files={DEFAULT_FILES} 
+            theme={cobalt2}
+            template="react"
+            options={{
+              recompileDelay: 300,
+              classes: {
+                "sp-layout": "!h-full !rounded-none !border-0",
+                "sp-wrapper": "!h-full !w-full",
+              }
+            }}
+          >
+            <div className="flex-1 flex overflow-hidden w-full h-full">
+              {/* Split Screen Stage */}
+              <SandpackLayout className="flex-1 flex w-full h-full border-0 !bg-transparent">
+                <div className="w-[200px] border-r border-white/5 h-full overflow-y-auto">
+                   <SandpackFileExplorer />
+                </div>
+                <div className="flex-1 flex flex-col min-w-0 h-full">
+                  <SandpackCodeEditor className="flex-1 h-full" showTabs={true} showLineNumbers={true} closableTabs={true} />
+                  <TerminalSync />
+                </div>
+                <div className="flex-1 border-l border-white/5 bg-[#050505] h-full">
+                  <SandpackPreview className="h-full w-full" />
+                </div>
+              </SandpackLayout>
+            </div>
+          </SandpackProvider>
+        </div>
 
-        <div className="w-[350px] border-l border-white/5 flex flex-col bg-white/[0.01] backdrop-blur-3xl">
+        {/* AI Sidebar - Right Side */}
+        <div className="w-[350px] flex flex-col border border-white/10 rounded-xl bg-white/[0.02] backdrop-blur-3xl overflow-hidden shrink-0">
           <div className="p-6 border-b border-white/5">
             <h3 className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#6366f1]">Agent Sidebar</h3>
           </div>
