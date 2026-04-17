@@ -31,6 +31,11 @@ function ArchitectContent() {
     if (urlStack && !blueprint) {
       setBlueprint({
         overview: '',
+        detailedOverview: {
+          architecture: '',
+          logic: '',
+          scalability: ''
+        },
         techStack: decodeURIComponent(urlStack).split(', '),
         requirements: [],
         steps: [],
