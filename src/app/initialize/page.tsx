@@ -21,7 +21,7 @@ import { BackButton } from '@/components/ui/back-button';
 
 const TECH_STACK_OPTIONS = [
   'React', 'Next.js', 'TypeScript', 'Node.js', 'Python', 'Go', 'Rust', 
-  'AWS', 'Supabase', 'PostgreSQL', 'TailwindCSS', 'Docker', 'Kubernetes'
+  'AWS', 'MongoDB', 'PostgreSQL', 'TailwindCSS', 'Docker', 'Kubernetes'
 ];
 
 export default function InitializePage() {
@@ -54,7 +54,7 @@ export default function InitializePage() {
   const runSimulation = async () => {
     const simulationLogs = [
       "> Initializing Career Calibration Node...",
-      "> Establishing Secure Uplink to Supabase Instance...",
+      "> Establishing Secure Uplink to MongoDB Cluster...",
       "> Parsing Resume manifest layers...",
       "> Extracting technical DNA and skill gaps...",
       "> Synthesizing Job-Match synergy coefficients...",
