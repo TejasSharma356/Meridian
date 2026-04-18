@@ -28,6 +28,18 @@ const ProjectSchema = new mongoose.Schema({
     type: [String],
     default: [],
   },
+  /** 0–3: deployment roadmap card index currently in progress */
+  roadmapStepIndex: {
+    type: Number,
+    default: 0,
+    min: 0,
+    max: 3,
+  },
+  /** Initial handoff prompt for the /build agent */
+  initialBuildPrompt: {
+    type: String,
+    default: '',
+  },
 }, {
   timestamps: true,
 });

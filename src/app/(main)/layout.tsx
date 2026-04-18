@@ -14,7 +14,8 @@ export default function MainLayout({
       <main className="flex-1 flex flex-col relative overflow-hidden">
         
         {/* Stage Area */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden pt-28 custom-scrollbar">
+        {/* pt-0: nav offset + rays alignment live in DashboardMainSurface so the canvas is one page */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden pt-0 custom-scrollbar">
           {children}
         </div>
       </main>

@@ -39,6 +39,10 @@ interface SystemFlowVizProps {
   persistenceNodeName?: string;
   nodes?: SystemNode[];
   edges?: SystemEdge[];
+  /** Toolbar / refine controls rendered between the tab bar and the diagram canvas */
+  aboveCanvas?: React.ReactNode;
+  /** Responsive diagram area; diagram scales inside this box */
+  canvasClassName?: string;
 }
 
 const NODE_STYLE: Record<NodeType, { icon: React.ReactNode; color: string; glow: string }> = {
@@ -60,7 +64,13 @@ const VIEW_TABS = [
   { id: 'state', label: 'State Machine', icon: <Activity size={14} /> },
 ];
 
-export default function SystemFlowViz({ persistenceNodeName, nodes, edges }: SystemFlowVizProps) {
+export default function SystemFlowViz({
+  persistenceNodeName,
+  nodes,
+  edges,
+  aboveCanvas,
+  canvasClassName = 'min-h-[min(72vh,44rem)] h-[min(72vh,44rem)] w-full',
+}: SystemFlowVizProps) {
   const [activeTab, setActiveTab] = useState('full');
 
   const displayNodes = useMemo(() => {
@@ -264,10 +274,13 @@ export default function SystemFlowViz({ persistenceNodeName, nodes, edges }: Sys
           </div>
         </div>
 
+        {aboveCanvas ? (
+          <div className="px-6 sm:px-8 py-4 border-b border-white/[0.04] bg-black/25">{aboveCanvas}</div>
+        ) : null}
+
         {/* Visualizer Canvas */}
         <div
-          className="relative w-full bg-[#050507] overflow-hidden"
-          style={{ height: '450px' }}
+          className={`relative w-full bg-[#050507] overflow-hidden ${canvasClassName}`}
         >
           {/* Background FX */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#6366f1]/10 via-transparent to-[#d856b8]/10" />

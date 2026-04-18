@@ -61,12 +61,29 @@ export default function AuthPage() {
       {/* Floating Back Button */}
       <div className="absolute top-8 left-8 z-30">
         <button
-          onClick={() => router.push('/')}
-          className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-xs font-bold group"
-          style={{ fontFamily: 'var(--font-press-start)' }}
+          onClick={() => {
+            if (window.history.length > 1) {
+              router.back();
+              return;
+            }
+            router.push('/');
+          }}
+          className="flex items-center gap-2 text-white/55 hover:text-white/80 transition-colors text-sm font-semibold tracking-wide"
+          aria-label="Go back"
         >
-          <span className="material-symbols-outlined text-[14px]">arrow_back</span>
-          HUB
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="h-4 w-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+          <span className="text-[13px] uppercase">HUB</span>
         </button>
       </div>
 

@@ -8,12 +8,16 @@ const client = new BedrockRuntimeClient({
   },
 });
 
-export async function invokeClaude(prompt: string, systemPrompt: string = "You are a specialized career assistant. Output ONLY valid JSON.") {
+export async function invokeClaude(
+  prompt: string,
+  systemPrompt: string = "You are a specialized career assistant. Output ONLY valid JSON.",
+  maxTokens: number = 4096
+) {
   const modelId = "anthropic.claude-3-5-sonnet-20240620-v1:0";
 
   const payload = {
     anthropic_version: "bedrock-2023-05-31",
-    max_tokens: 2500, // Enough for blueprint with nodes/edges
+    max_tokens: maxTokens,
     system: systemPrompt,
     messages: [
       {
@@ -38,9 +42,9 @@ export async function invokeClaude(prompt: string, systemPrompt: string = "You a
     // Extract the text content from Claude's response
     const text = result.content[0].text;
     
-    // Attempt to parse JSON
+    const cleaned = extractJsonBlock(text);
     try {
-      return JSON.parse(text);
+      return JSON.parse(cleaned);
     } catch (e) {
       console.warn("Bedrock response was not valid JSON, returning raw text.");
       return text;
@@ -49,4 +53,12 @@ export async function invokeClaude(prompt: string, systemPrompt: string = "You a
     console.error("Bedrock invocation failed:", error);
     throw error;
   }
+}
+
+/** Strip optional ```json fences from model output */
+function extractJsonBlock(text: string): string {
+  const t = text.trim();
+  const m = t.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (m) return m[1].trim();
+  return t;
 }
