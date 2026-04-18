@@ -19,29 +19,26 @@ export function FloatingNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-  const isPortfolio = pathname === '/portfolio';
-  const [isHovered, setIsHovered] = useState(false);
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setScrolled(latest > 20);
   });
 
   return (
-    <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.23, 0.86, 0.39, 0.96] }}
-        className="fixed top-4 left-0 right-0 z-[70] flex justify-center px-4 pointer-events-none"
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.23, 0.86, 0.39, 0.96] }}
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+    >
+      <div
+        className={cn(
+          "pointer-events-auto w-full max-w-4xl rounded-3xl border transition-all duration-500",
+          scrolled
+            ? "bg-black/75 backdrop-blur-2xl border-white/[0.14] shadow-2xl shadow-black/50"
+            : "bg-white/[0.04] backdrop-blur-lg border-white/[0.08]"
+        )}
       >
-        <div
-          className={cn(
-            "pointer-events-auto w-full max-w-4xl rounded-3xl border transition-all duration-500",
-            scrolled
-              ? "bg-black/75 backdrop-blur-2xl border-white/[0.14] shadow-2xl shadow-black/50"
-              : "bg-white/[0.04] backdrop-blur-lg border-white/[0.08]"
-          )}
-        >
         <div className="flex items-center justify-between px-6 py-3.5">
           {/* Logo — single instance */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
@@ -55,37 +52,28 @@ export function FloatingNavbar() {
 
           {/* Desktop nav links */}
           <nav className="hidden md:flex items-center gap-1">
-            {isPortfolio ? (
-              <Link
-                href="/dashboard"
-                className="relative px-4 py-2 rounded-2xl text-sm font-medium text-white/50 hover:text-white transition-all duration-200 flex items-center gap-2"
-              >
-                 <span>← Back to Dashboard</span>
-              </Link>
-            ) : (
-              navLinks.map((link) => {
-                const active = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "relative px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-200",
-                      active ? "text-white" : "text-white/50 hover:text-white/80"
-                    )}
-                  >
-                    {active && (
-                      <motion.span
-                        layoutId="navbar-pill"
-                        className="absolute inset-0 rounded-2xl bg-white/[0.09] border border-white/[0.12]"
-                        transition={{ type: "spring", bounce: 0.25, duration: 0.4 }}
-                      />
-                    )}
-                    <span className="relative z-10">{link.label}</span>
-                  </Link>
-                );
-              })
-            )}
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-200",
+                    active ? "text-white" : "text-white/50 hover:text-white/80"
+                  )}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="navbar-pill"
+                      className="absolute inset-0 rounded-2xl bg-white/[0.09] border border-white/[0.12]"
+                      transition={{ type: "spring", bounce: 0.25, duration: 0.4 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.label}</span>
+                </Link>
+              );
+            })}
           </nav>
 
           {/* CTA */}
@@ -152,6 +140,5 @@ export function FloatingNavbar() {
         </motion.div>
       </div>
     </motion.header>
-    </>
   );
 }

@@ -353,6 +353,21 @@ function AuthSignIn({ onForgotPassword, onSignUp }: AuthSignInProps) {
       <AuthSeparator />
       <AuthSocialButtons isLoading={formState.isLoading} />
 
+      <AuthSeparator text="DEVELOPER ONLY" />
+      <div className="mt-4">
+        <Button 
+          type="button"
+          variant="outline"
+          className="w-full border-dashed border-[#d856b8]/50 text-[#d856b8] hover:bg-[#d856b8]/5 hover:text-[#d856b8]"
+          disabled={formState.isLoading}
+          onClick={async () => {
+            const { bypassAuthAction } = await import("@/app/auth/actions");
+            await bypassAuthAction();
+          }}
+        >
+          FORCE DEV BYPASS
+        </Button>
+      </div>
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
         No account?{" "}
