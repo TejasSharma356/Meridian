@@ -72,7 +72,7 @@ export default function AuthPage() {
 
       {/* Auth Card wrapper */}
       <main className="relative z-20 w-full flex justify-center items-center">
-        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "dummy-client-id.apps.googleusercontent.com"}>
           <Auth />
         </GoogleOAuthProvider>
       </main>
