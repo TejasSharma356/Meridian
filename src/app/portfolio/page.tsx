@@ -9,7 +9,7 @@ import { fetchPortfolioConfig, savePortfolioConfig } from './actions';
 type TemplateType = 'teal' | 'minimal' | 'hacker';
 
 const initialMockData = {
-  name: 'Vighnesh Singh Dhanai',
+  name: 'John Doe',
   title: 'Software Engineer & Founder',
   summary: 'SRMITE. Obsessed with shrinking the gap between talent and opportunity, Hates linkedin so founded an alternative.',
   experience: [
@@ -17,7 +17,7 @@ const initialMockData = {
     { id: 2, role: 'SDE Intern', company: 'Tech Startup', period: 'Summer 2024' }
   ],
   education: [
-    { id: 1, institution: 'SRM Institute of Science and Technology', degree: 'B.Tech Computer Science', year: '2022 - 2026' }
+    { id: 1, institution: 'Caltech', degree: 'B.Tech Computer Science', year: '2022 - 2026' }
   ],
   skills: 'React, Next.js, Typescript, Tailwind, Node.js, Framer Motion, Python',
   projects: [
